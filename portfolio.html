@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Josh White — Cyber Security Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0A0F1E;
+    --card:      #111827;
+    --card-hover:#152035;
+    --border:    #1E2D45;
+    --accent:    #00D4FF;
+    --amber:     #FFB800;
+    --green:     #00E676;
+    --text:      #E8EDF5;
+    --muted:     #6B8299;
+    --dim:       #2A3A50;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,15,30,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 2rem 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.5s 0.3s forwards;
+  }
+  .hero-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.5s forwards;
+  }
+  .hero-name span { color: var(--accent); }
+
+  .terminal-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(14px, 2vw, 18px);
+    color: var(--muted);
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.8s forwards;
+  }
+  .terminal-line .prompt { color: var(--green); }
+  .terminal-line .typed {
+    color: var(--text);
+    border-right: 2px solid var(--accent);
+    animation: blink 1s step-end infinite;
+    padding-right: 2px;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 1.1s forwards;
+  }
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes blink {
+    0%, 100% { border-color: var(--accent); }
+    50%       { border-color: transparent; }
+  }
+
+  /* ── ABOUT ── */
+  .section { padding: 5rem 2rem; max-width: 900px; margin: 0 auto; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .about-text {
+    font-size: 1.15rem;
+    color: var(--text);
+    max-width: 680px;
+    line-height: 1.8;
+  }
+  .about-text strong { color: var(--accent); font-weight: 600; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 2rem;
+  }
+
+  /* ── FILTERS ── */
+  .projects-section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 3rem;
+  }
+  .filter-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+    font-weight: 600;
+  }
+
+  /* ── PROJECT GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.75rem;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent-color, var(--accent));
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .card:hover {
+    background: var(--card-hover);
+    border-color: var(--accent-color, var(--accent));
+    transform: translateY(-2px);
+  }
+  .card:hover::before { opacity: 1; }
+
+  .card-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  .card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 0.6rem;
+    color: var(--text);
+  }
+  .card-desc {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 1.25rem;
+  }
+  .card-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .tool-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: var(--dim);
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* card expand */
+  .card-detail {
+    display: none;
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .card-detail.open { display: block; }
+  .card-detail ul { padding-left: 1.2rem; }
+  .card-detail li { margin-bottom: 0.35rem; }
+  .card-detail li::marker { color: var(--accent); }
+  .card-expand-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.08em;
+    margin-top: 1rem;
+    transition: color 0.2s;
+  }
+  .card:hover .card-expand-hint { color: var(--muted); }
+
+  /* ── CATEGORY COLOURS ── */
+  .tag-defensive  { background: rgba(0,212,255,0.12); color: #00D4FF; }
+  .tag-offensive  { background: rgba(255,59,59,0.12); color: #FF5252; }
+  .tag-forensics  { background: rgba(255,184,0,0.12); color: #FFB800; }
+  .tag-ai         { background: rgba(138,43,226,0.15); color: #C084FC; }
+  .tag-iot        { background: rgba(0,230,118,0.12); color: #00E676; }
+  .tag-ethics     { background: rgba(255,152,0,0.12); color: #FF9800; }
+  .tag-networking { background: rgba(100,181,246,0.12); color: #64B5F6; }
+  .tag-dev        { background: rgba(255,64,129,0.12); color: #FF4081; }
+
+  .card[data-cat="defensive"] { --accent-color: #00D4FF; }
+  .card[data-cat="offensive"] { --accent-color: #FF5252; }
+  .card[data-cat="forensics"] { --accent-color: #FFB800; }
+  .card[data-cat="ai"]        { --accent-color: #C084FC; }
+  .card[data-cat="iot"]       { --accent-color: #00E676; }
+  .card[data-cat="ethics"]    { --accent-color: #FF9800; }
+  .card[data-cat="networking"]{ --accent-color: #64B5F6; }
+  .card[data-cat="dev"]       { --accent-color: #FF4081; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .footer-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  .footer-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .footer-sub { color: var(--muted); font-size: 13px; }
+  .contact-links { display: flex; flex-direction: column; gap: 0.5rem; }
+  .contact-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .contact-link:hover { color: var(--accent); }
+  .contact-link .lbl {
+    color: var(--accent);
+    min-width: 60px;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .hero-stats { gap: 2rem; }
+    .nav-links { display: none; }
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    .hero-eyebrow, .hero-name, .terminal-line, .hero-stats { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">jw@portfolio:~$</span>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">BSc (Hons) Cyber Security · Bath Spa University · 2:1</p>
+  <h1 class="hero-name">Josh<br><span>White.</span></h1>
+  <p class="terminal-line">
+    <span class="prompt">→ </span>
+    <span class="typed" id="typed-text"></span>
+  </p>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">20</div>
+      <div class="stat-label">Projects</div>
+    </div>
+    <div>
+      <div class="stat-num">320+</div>
+      <div class="stat-label">Immersive Labs</div>
+    </div>
+    <div>
+      <div class="stat-num">36,830</div>
+      <div class="stat-label">Lab Points</div>
+    </div>
+    <div>
+      <div class="stat-num">2:1</div>
+      <div class="stat-label">Degree Class</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <p class="section-label">// about</p>
+  <p class="about-text">
+    Cyber security graduate specialising in <strong>defensive security, DFIR, and threat intelligence</strong>.
+    Experienced applying NIST CSF, MITRE ATT&CK, and industry tooling — Splunk, Elastic, Velociraptor, Nmap, Nessus — across real and simulated environments.
+    Comfortable on both sides of the kill chain: from CNI vulnerability assessments and post-incident analysis to AI/ML security research and digital forensics.
+    Looking for a first graduate role where I can contribute to blue team operations, threat analysis, or security consulting.
+  </p>
+</section>
+
+<hr class="divider">
+
+<!-- PROJECTS -->
+<section class="projects-section" id="projects">
+  <p class="section-label">// projects</p>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="defensive">Defensive</button>
+    <button class="filter-btn" data-filter="offensive">Offensive</button>
+    <button class="filter-btn" data-filter="forensics">Forensics</button>
+    <button class="filter-btn" data-filter="ai">AI / ML</button>
+    <button class="filter-btn" data-filter="iot">IoT</button>
+    <button class="filter-btn" data-filter="ethics">Ethics</button>
+    <button class="filter-btn" data-filter="networking">Networking</button>
+    <button class="filter-btn" data-filter="dev">Development</button>
+  </div>
+
+  <div class="grid" id="project-grid">
+
+    <!-- DEFENSIVE -->
+    <div class="card" data-cat="defensive">
+      <span class="card-tag tag-defensive">Defensive</span>
+      <h3 class="card-title">Webb For U — Defensive Security Report</h3>
+      <p class="card-desc">Full cybersecurity posture evaluation for a web advertising firm following a SQL database compromise. Assessed against NIST CSF and produced a costed remediation plan.</p>
+      <div class="card-tools">
+        <span class="tool-badge">NIST CSF</span>
+        <span class="tool-badge">MITRE ATT&CK</span>
+        <span class="tool-badge">Splunk</span>
+        <span class="tool-badge">Elastic</span>
+        <span class="tool-badge">Velociraptor</span>
+        <span class="tool-badge">Autopsy</span>
+        <span class="tool-badge">Wireshark</span>
+      </div>
+      <div class="card-detail">
+        <ul>
+          <li>Identified root cause: unsecured MS SQL server access enabling malware injection and client ad hijacking</li>
+          <li>Evaluated existing security plan against NIST CSF functions: Govern, Identify, Protect, Detect, Respond, Recover</li>
+          <li>Produced prioritised costed remediation plan totalling £16,448 across four categories</li>
+          <li>Covered access control, staff training, network segmentation, off-site backups, and incident response planning</li>
+          <li>Included Immersive Labs completions: MITRE ATT&CK, Velociraptor, Autopsy, Splunk, Wireshark, DDOS analysis, Vulnerability Management</li>
+        </ul>
+      </div>
+      <p class="card-expand-hint">[ click to expand ]</p>
+    </div>
+
+    <div class="card" data-cat="defensive">
+      <span class="card-tag tag-defensive">Defensive</span>
+      <h3 class="card-title">SecBam — Post-Incident Response Report</h3>
+      <p class="card-desc">Post-incident analysis of a social engineering attack that led to C2 callback, data exfiltration and file deletion. Mapped to NIST SP 800-61 and MITRE ATT&CK.</p>
+      <div class="card-tools">
+        <span class="tool-badge">NIST SP 800-61</span>
+        <span class="tool-badge">MITRE ATT&CK</span>
+        <span class="tool-badge">C2 Analysis</span>
+        <span class="tool-badge">Incident Response</span>
+      </div>
+      <div class="card-detail">
+        <ul>
+          <li>Investigated insider-threat vector: malware delivered via social engineering with knowledge of specific file directories</li>
+          <li>Mapped incident lifecycle across NIST CSF functions: Govern, Identify, Protect, Detect, Respond, Recover</li>
+          <li>Compared NIST SP 800-61r2 vs MITRE ATT&CK frameworks for incident response coverage</li>
+          <li>Documented alternative response actions and their potential outcomes</li>
+          <li>Produced risk matrix and recommendations to rebuild client/investor trust</li>
+        </ul>
+      </div>
+      <p class="card-expand-hint">[ click to expand ]</p>
+    </div>
+
+    <div class="card" data-cat="defensive">
+      <span class="card-tag tag-defensive">Defensive</span>
+      <h3 class="card-title">Teletainment Ltd — Cyber Resilience Plan</h3>
+      <p class="card-desc">Comprehensive resilience plan for an entertainment company recovering from a ransomware attack, assessing compliance, risk appetite, and continuity strategy.</p>
+      <div class="card-tools">
+        <span class="tool-badge">ISO 22301</span>
+        <span class="tool-badge">MITRE ATT&CK</span>
+        <span class="tool-badge">NIST CSF</span>
+        <span class="tool-badge">GDPR</span>
+        <span class="tool-badge">Risk Assessment</span>
+      </div>
+      <div class="card-detail">
+        <ul>
+          <li>Evaluated existing policies and procedures against ISO 22301 and NIST CSF</li>
+          <li>Conducted threat and asset assessment with criticality/likelihood risk scoring matrix</li>
+          <li>Mapped attack surface to MITRE ATT&CK techniques for targeted threat modelling</li>
+          <li>Proposed current-to-future state network architecture changes</li>
+          <li>Defined risk appetite and long-term continuous improvement roadmap</li>
+          <li>Addressed planned international expansion into South America and Asia markets</li>
+        </ul>
+      </div>
+      <p class="card-expand-hint">[ click to expand ]</p>
+    </div>
+
+    <!-- OFFENSIVE -->
+    <div class="card" data-cat="offensive">
+      <span class="card-tag tag-offensive">Offensive</span>
+      <h3 class="card-title">Brite Spark Power Ltd — CNI Vulnerability Assessment</h3>
+      <p class="card-desc">Vulnerability assessment and physical penetration test of a Critical National Infrastructure power company. Identified critical CVEs across ICS/OT and web infrastructure.</p>
+      <div class="card-tools">
+        <span class="tool-badge">Nmap</span>
+        <span class="tool-badge">Nessus</span>
+        <span class="tool-badge">ICS/OT</span>
+        <span class="tool-badge">CVE Analysis</span>
+        <span class="tool-badge">Physical Pentest</span>
+        <span class="tool-badge">Social Engineering</span>
+      </div>
+      <div class="card-detail">
+        <ul>
+          <li>Scoped: internal network 10.10.100.1/24 + physical site — hosts including Primary Server, RTU, Controller, JumpBox, OpenWrt console and exposed DrayTek router</li>
+          <li>Discovered Apache PHP-CGI Remote Code Execution vulnerability on primary server</li>
+          <li>Identified exposed phpMyAdmin interface, missing web security flags, and sensitive config disclosure</li>
+          <li>Physical: tailgating risks, social engineering vectors, and inadequate access control documented</li>
+          <li>Produced business risk analysis and technical remediation recommendations for each finding</li>
+          <li>Classified CONFIDENTIAL; produced to professional report standard</li>
+        </ul>
+      </div>
+      <p class="card-expand-hint">[ click to expand ]</p>
+    </div>
+
+    <div class="card" data-cat="offensive">
+      <span class="card-tag tag-offensive">Offensive</span>
+      <h3 class="card-title">Offensive Security — Immersive Labs Portfolio</h3>
+      <p class="card-desc">Hands-on offensive security skills demonstrated across OSINT, web exploitation (SQLi, XSS), and penetration testing fundamentals via Immersive Labs.</p>
+      <div class="card-tools">
+        <span class="tool-badge">OSINT</span>
+        <span class="tool-badge">SQL Injection</span>
+        <span class="tool-badge">XSS</span>
+        <span class="tool-badge">Shodan</span>
+        <span class="tool-badge">Spiderfoot</span>
+        <span class="tool-badge">Tor</span>
+        <span class="tool-badge">Burp Suite</span>
+      </div>
+      <div class="card-detail">
+        <ul>
+          <li>OSINT: EXIF extraction, cached/archived sites, social media privacy analysis, robots.txt, OPSEC principles, Shodan, Spiderfoot, domain intelligence</li>
+          <li>SQL Injection: basic SQLi, UNION queries, hidden data, filter evasion, string concatenation, database enumeration</li>
+          <li>XSS: reflected and stored cross-site scripting attack demonstrations</li>
+          <li>320+ Immersive Labs completed totalling 36,830 points</li>
+        </ul>
+      </div>
+      <p class="card-expand-hint">[ click to expand ]</p>
+    </div>
+
+    <!-- FORENSICS -->
+    <div class="card" data-cat="forensics">
+      <span class="card-tag tag-forensics">Forensics</span>
+      <h3 class="card-title">Digital Forensics Exercises</h3>
+      <p class="card-desc">13 practical forensics exercises spanning HEX analysis, metadata extraction, registry investigation, file hashing, and geolocation — conducted in Kali Linux.</p>
+      <div class="card-tools">
+        <span class="tool-badge">Kali Linux</span>
+        <span class="tool-badge">Autopsy</span>
+        <span class="tool-badge">CyberChef</span>
+        <span class="tool-badge">Reglookup</span>
+        <span class="tool-badge">John the Ripper</span>
+        <span class="tool-badge">Forensically</span>
+        <span class="tool-badge">Strings</span>
+      </div>
+      <div class="card-detail">
+        <ul>
+          <li>HEX and binary analysis: identifying authors and corruption in files via standalone HEX extract</li>
+          <li>Network card forensics: recovering IP and MAC address artefacts</li>
+          <li>Image tampering detection using EXIF metadata and photographic forensic tools</li>
+          <li>File hashing and integrity verification using Windows CMD and Kali</li>
+          <li>Registry analysis with Reglookup and CyberChef to recover user activity</li>
+          <li>Password hash extraction and cracking using Office2John + John the Ripper on protected Excel documents</li>
+          <li>Geolocation recovery from image metadata using Forensically</li>
+        </ul>
+      </div>
+      <p class="card-expand-hint">[ click to expand ]</p>
+    </div>
+
+    <!-- AI/ML -->
+    <div class="card" data-cat="ai">
+      <span class="card-tag tag-ai">AI / ML</span>
+      <h3 class="card-title">AI Data Poisoning Research — Fake News Detection</h3>
+      <p class="card-desc">Final-year research project investigating AI data poisoning via social media. Used three LLMs across five datasets to identify linguistic patterns that distinguish fake from legitimate news.</p>
+      <div class="card-tools">
+        <span class="tool-badge">Mistral-7B</span>
+        <span class="tool-badge">LLaMA 2-13B</span>
+        <span class="tool-badge">MiniLM</span>
+        <span class="tool-badge">Python</span>
+        <span class="tool-badge">HuggingFace</span>
+        <span class="tool-badge">Regex</span>
+        <span class="tool-badge">NLP</span>
+      </div>
+      <div class="card-detail">
+        <ul>
+          <li>Research question: what linguistic patterns distinguish fake news articles from legitimate sources?</li>
+          <li>Datasets: HuggingFace (political/global), ISOT (security/data analysis), LIAR (benchmark political), Science Feedback (scraped health misinformation), custom self-built dataset</li>
+          <li>Prompted LLMs to identify patterns; used Regular Expressions to extract flagged phrases; MiniLM vectorised text for mathematical similarity comparison</li>
+          <li>Investigated grouping by source, geography, timing (e.g. elections), and topic type</li>
+          <li>Outputs support future AI training pipelines to filter misinformation at ingestion</li>
+        </ul>
+      </div>
+      <p class="card-expand-hint">[ click to expand ]</p>
+    </div>
+
+    <div class="card" data-cat="ai">
+      <span class="card-tag tag-ai">AI / ML</span>
+      <h3 class="card-title">Rule-Based AI — Flag Religion Classifier</h3>
+      <p class="card-desc">Comparative study of Expert System and Fuzzy Logic AI approaches applied to the Collins Gem flag dataset to classify countries' religious demographics from flag features.</p>
+      <div class="card-tools">
+        <span class="tool-badge">Expert Systems</span>
+        <span class="tool-badge">Fuzzy Logic</span>
+        <span class="tool-badge">Python</span>
+        <span class="tool-badge">Rule-Based AI</span>
+        <span class="tool-badge">Classification</span>
+      </div>
+      <div class="card-detail">
+        <ul>
+          <li>Expert System: predefined Boolean rule chains to classify flag features as religious or cultural symbols</li>
+          <li>Fuzzy Logic: weighted scoring for ambiguous cases where no absolute true/false exists</li>
+          <li>Dataset: Collins Gem Flags 1990 — 10 numeric, rest Boolean/nominal attributes across 196 nations</li>
+          <li>Benchmarked both systems on accuracy, precision, and computational efficiency</li>
+          <li>Key challenge: distinguishing historical/cultural symbols from religious ones (e.g. Singapore's crescent)</li>
+        </ul>
+      </div>
+      <p class="card-expand-hint">[ click to expand ]</p>
+    </div>
+
+    <div class="card" data-cat="ai">
+      <span class="card-tag tag-ai">AI / ML</span>
+      <h3 class="card-title">ML Heart Disease Prediction</h3>
+      <p class="card-desc">Supervised ML study using Logistic Regression and K-Nearest Neighbour to predict coronary heart disease from cholesterol density and patient data across four clinical datasets.</p>
+      <div class="card-tools">
+        <span class="tool-badge">Logistic Regression</span>
+        <span class="tool-badge">KNN</span>
+        <span class="tool-badge">Python</span>
+        <span class="tool-badge">UCI Dataset</span>
+        <span class="tool-badge">Scikit-learn</span>
+      </div>
+      <div class="card-detail">
+        <ul>
+          <li>Data: UCI Heart Disease dataset — Cleveland, Hungary, Switzerland, VA Long Beach databases</li>
+          <li>Logistic Regression: Sigmoid curve classification, threshold tuning, precision/recall tradeoffs</li>
+          <li>KNN: nearest-neighbour similarity matching for risk stratification by cholesterol level</li>
+          <li>Evaluated: accuracy, precision, recall, F1 score across both models</li>
+          <li>Identified confounding factors: age, sex, medication disruption to cholesterol baseline</li>
+        </ul>
+      </div>
+      <p class="card-expand-hint">[ click to expand ]</p>
+    </div>
+
+    <!-- IoT -->
+    <div class="card" data-cat="iot">
+      <span class="card-tag tag-iot">IoT</span>
+      <h3 class="card-title">IoT in National Security & Warfare</h3>
+      <p class="card-desc">Academic research report on the security implications of IoT in military and national security contexts. Includes threat modelling, ML activity recognition experiments, and future warfare analysis.</p>
+      <div class="card-tools">
+        <span class="tool-badge">Threat Modelling</span>
+        <span class="tool-badge">ML/DL</span>
+        <span class="tool-badge">STRIDE</span>
+        <span class="tool-badge">ICS/OT</span>
+        <span class="tool-badge">IoMT</span>
+      </div>
+      <div class="card-detail">
+        <ul>
+          <li>Analysed IoT use in surveillance, AR, asset tracking, smart contracts, OT and Internet of Medical Things (IoMT)</li>
+          <li>Evaluated eavesdropping, MITM, and data poisoning threats in IoT networks</li>
+          <li>Built ML/DL models for human activity recognition using real-time movement data from Tracks Logger app</li>
+          <li>Constructed layered Military IoT system diagram showing device-to-command data flows</li>
+          <li>Proposed mitigation strategies and assessed ethical/privacy issues including facial recognition and smart toys</li>
+          <li>Discussed future IoT in warfare: autonomous systems, battlefield AI decision-making</li>
+        </ul>
+      </div>
+      <p class="card-expand-hint">[ click to expand ]</p>
+    </div>
+
+    <div class="card" data-cat="iot">
+      <span class="card-tag tag-iot">IoT</span>
+      <h3 class="card-title">IoT Human Activity Recognition — Group Project</h3>
+      <p class="card-desc">Group research project applying IoT sensor data and machine/deep learning to human activity recognition for surveillance and crime prevention applications.</p>
+      <div class="card-tools">
+        <span class="tool-badge">ML/DL</span>
+        <span class="tool-badge">Python</span>
+        <span class="tool-badge">GitHub</span>
+        <span class="tool-badge">Data Collection</span>
+        <span class="tool-badge">Visualisation</span>
+      </div>
+      <div class="card-detail">
+        <ul>
+          <li>Concept: leverage IoT sensor data for preventative surveillance, derived from anti-terrorism use cases</li>
+          <li>Roles: ML/DL Lead, Data Collection Lead, Results &amp; Visualisation Lead, Ethics &amp; Security Lead, Documentation Lead</li>
+          <li>Collected real-time accelerometer/gyroscope data via Tracks Logger app</li>
+          <li>Trained and evaluated ML and DL classification models for activity detection accuracy</li>
+          <li>Progress tracked collaboratively via GitHub</li>
+        </ul>
+      </div>
+      <p class="card-expand-hint">[ click to expand ]</p>
+    </div>
+
+    <!-- ETHICS -->
+    <div class="card" data-cat="ethics">
+      <span class="card-tag tag-ethics">Ethics</span>
+      <h3 class="card-title">Europol Operation Venetic / EncroChat</h3>
+      <p class="card-desc">Analysis of law enforcement infiltrating EncroChat — an encrypted criminal communications platform — examining the legal, ethical, and privacy implications of bulk surveillance.</p>
+      <div class="card-tools">
+        <span class="tool-badge">Cyber Law</span>
+        <span class="tool-badge">GDPR</span>
+        <span class="tool-badge">Bulk Surveillance</span>
+        <span class="tool-badge">Digital Rights</span>
+        <span class="tool-badge">Europol</span>
+      </div>
+      <div class="card-detail">
+        <ul>
+          <li>French/Dutch agencies deployed malware update to ~60,000 EncroChat devices, enabling real-time monitoring</li>
+          <li>UK's Operation Venetic (NCA) resulted in 746 arrests, 77 firearms seized, major drug and murder plots disrupted</li>
+          <li>Critically evaluated: bulk data collection, consent, privacy vs public safety tradeoffs, evidence admissibility</li>
+          <li>Proposed independent oversight framework for limited, auditable law enforcement access</li>
+          <li>Argued full disclosure of hacking methods is required for fair evidence authentication</li>
+        </ul>
+      </div>
+      <p class="card-expand-hint">[ click to expand ]</p>
+    </div>
+
+    <div class="card" data-cat="ethics">
+      <span class="card-tag tag-ethics">Ethics</span>
+      <h3 class="card-title">Uber 2016 Breach — Ethical & Legal Analysis</h3>
+      <p class="card-desc">Case study on Uber's 2016 data breach affecting 57 million users, and the concealment of the incident by CISO Joe Sullivan. Analyses data protection law, ethical obligations and response options.</p>
+      <div class="card-tools">
+        <span class="tool-badge">GDPR</span>
+        <span class="tool-badge">Data Protection</span>
+        <span class="tool-badge">Incident Response</span>
+        <span class="tool-badge">Bug Bounty Abuse</span>
+        <span class="tool-badge">FTC</span>
+      </div>
+      <div class="card-detail">
+        <ul>
+          <li>Attack vector: credentials accidentally exposed in GitHub repo → AWS access → 57M user records exfiltrated</li>
+          <li>Sullivan paid $100K ransom disguised as bug bounty payment via HackerOne, concealed breach for 1 year</li>
+          <li>Analysed four response options: pay/don't pay ransom × disclose/conceal breach</li>
+          <li>Identified repeated failure pattern from 2014 breach — same AWS key exposure vector, unencrypted data</li>
+          <li>Applied GDPR maximum penalty analysis; recommended MFA, key rotation, access control, encrypted storage</li>
+        </ul>
+      </div>
+      <p class="card-expand-hint">[ click to expand ]</p>
+    </div>
+
+    <div class="card" data-cat="ethics">
+      <span class="card-tag tag-ethics">Ethics</span>
+      <h3 class="card-title">TeleHeart PLC — Pen Tester Whistleblowing Dilemma</h3>
+      <p class="card-desc">Hypothetical ethics case: a CREST-certified pen tester discovers corporate misconduct at a medical device company with government CNI contracts. Evaluates disclosure obligations and whistleblower options.</p>
+      <div class="card-tools">
+        <span class="tool-badge">CNI Ethics</span>
+        <span class="tool-badge">CREST</span>
+        <span class="tool-badge">MHRA</span>
+        <span class="tool-badge">NCSC</span>
+        <span class="tool-badge">ICO</span>
+      </div>
+      <div class="card-detail">
+        <ul>
+          <li>Findings: hush money for workplace discrimination; unaudited PRC supply chain; undisclosed ransomware settlement with Russian gang</li>
+          <li>Evaluated five options: do nothing, notify management, investigate further, confront client, report to authorities</li>
+          <li>Recommended immediate disclosure to MHRA (medical device safety), NCSC (cyber risk), and ICO (data protection)</li>
+          <li>Argued device deployment constitutes CNI — national urgency overrides business relationship</li>
+          <li>Addressed challenge of evidence authenticity and maintaining CREST scope boundaries</li>
+        </ul>
+      </div>
+      <p class="card-expand-hint">[ click to expand ]</p>
+    </div>
+
+    <!-- NETWORKING -->
+    <div class="card" data-cat="networking">
+      <span class="card-tag tag-networking">Networking</span>
+      <h3 class="card-title">Enterprise Network Design — 3-Floor Architecture</h3>
+      <p class="card-desc">Designed and evaluated three network architectures for a 100-user enterprise, recommending a VLAN/Star topology with DMZ, RADIUS authentication, and cloud backup.</p>
+      <div class="card-tools">
+        <span class="tool-badge">VLANs</span>
+        <span class="tool-badge">DMZ</span>
+        <span class="tool-badge">RADIUS</span>
+        <span class="tool-badge">IDS</span>
+        <span class="tool-badge">DNS/Mail/Web Servers</span>
+        <span class="tool-badge">VPN</span>
+        <span class="tool-badge">Subnetting</span>
+      </div>
+      <div class="card-detail">
+        <ul>
+          <li>Evaluated three designs: VLANs + Star with cloud storage; Routers + WPA2 with local storage; Mesh + Switches with cloud storage</li>
+          <li>Recommended Design 1: 4 switches, 6 VLANs, star topology, 3 WAPs for 100 Dell desktops across 3 floors</li>
+          <li>DMZ architecture hosting Mail, DNS, Web and IDS servers with controlled external exposure</li>
+          <li>RADIUS server for centralised authentication; VPN for remote access; subnetting for segmentation</li>
+          <li>Full asset list with cost breakdown and Ethernet cabling plan (~115 runs)</li>
+        </ul>
+      </div>
+      <p class="card-expand-hint">[ click to expand ]</p>
+    </div>
+
+    <div class="card" data-cat="networking">
+      <span class="card-tag tag-networking">Networking</span>
+      <h3 class="card-title">Network Administration — OpenWrt & SSH Hardening</h3>
+      <p class="card-desc">Hands-on network administration exercises covering Wi-Fi security protocols, MAC filtering, real-time traffic monitoring, SSH key management and remote access hardening on a Raspberry Pi 5.</p>
+      <div class="card-tools">
+        <span class="tool-badge">OpenWrt</span>
+        <span class="tool-badge">Raspberry Pi 5</span>
+        <span class="tool-badge">SSH</span>
+        <span class="tool-badge">WPA2-PSK</span>
+        <span class="tool-badge">MAC Filtering</span>
+        <span class="tool-badge">Kali Linux</span>
+      </div>
+      <div class="card-detail">
+        <ul>
+          <li>Configured WPA2-PSK, ESSID hardening, and MAC address filtering on personal OpenWrt router (Raspberry Pi 5)</li>
+          <li>Monitored real-time network activity: bandwidth per device, channel congestion, interface throughput via LuCI</li>
+          <li>Set up remote SSH service; generated SSH key pairs in Kali Linux VM; secured access with key-based auth</li>
+          <li>Implemented Class B IP reconfiguration with static IP and subnet verification</li>
+          <li>Compared Wi-Fi protocol standards: AC vs N vs Legacy modes — performance, band support, compatibility</li>
+        </ul>
+      </div>
+      <p class="card-expand-hint">[ click to expand ]</p>
+    </div>
+
+    <!-- DEV -->
+    <div class="card" data-cat="dev">
+      <span class="card-tag tag-dev">Development</span>
+      <h3 class="card-title">Harry Potter API — Data-Driven Application</h3>
+      <p class="card-desc">Built an interactive C++ application using openFrameworks and a REST API to let users browse and review Harry Potter films, books, characters, spells and potions.</p>
+      <div class="card-tools">
+        <span class="tool-badge">C++</span>
+        <span class="tool-badge">openFrameworks</span>
+        <span class="tool-badge">REST API</span>
+        <span class="tool-badge">ofxJSON</span>
+        <span class="tool-badge">GitHub</span>
+      </div>
+      <div class="card-detail">
+        <ul>
+          <li>Consumed Harry Potter API via ofxJSON addon; dynamically loaded media attributes and images per category</li>
+          <li>2D array mediaFile[page][mediaId] managed multi-category content across paginated views</li>
+          <li>Features: thumbs up/down ratings, free-text review submission (saved to file), 70-char input limit, review counter capped at 5</li>
+          <li>Custom image fallback placeholder for broken/missing URLs; fixed window size enforcement</li>
+          <li>Full test plan across 11 cases with pass/fail results; identified and fixed pagination overflow bug</li>
+          <li>Source code: github.com/JoshWhite765</li>
+        </ul>
+      </div>
+      <p class="card-expand-hint">[ click to expand ]</p>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-name">Josh White</div>
+      <div class="footer-sub">BSc (Hons) Cyber Security · Bath Spa University · 2:1<br>Open to graduate roles in defensive security, DFIR &amp; threat intelligence</div>
+    </div>
+    <div class="contact-links">
+      <a class="contact-link" href="mailto:josh@westendfoxham.co.uk">
+        <span class="lbl">email</span> josh@westendfoxham.co.uk
+      </a>
+      <a class="contact-link" href="https://www.linkedin.com/in/joshua-white-42631a316" target="_blank">
+        <span class="lbl">linkedin</span> linkedin.com/in/joshua-white-42631a316
+      </a>
+      <a class="contact-link" href="https://github.com/JoshWhite765" target="_blank">
+        <span class="lbl">github</span> JoshWhite765
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Typewriter
+  const phrases = [
+    'DFIR',
+    'Offensive Security',
+    'Cyber Security graduate',
+    'Defensive Security',
+    'Immersive Labs',
+    'AI / ML',
+    'Threat Intelligence',
+    'Vulnerability Assessment',
+    'C++, Python, Bash',
+    'NIST CSF, MITRE ATT&CK'
+  ];
+  let pi = 0, ci = 0, deleting = false;
+  const el = document.getElementById('typed-text');
+
+  function type() {
+    const phrase = phrases[pi];
+    if (!deleting) {
+      el.textContent = phrase.slice(0, ++ci);
+      if (ci === phrase.length) { deleting = true; setTimeout(type, 1800); return; }
+    } else {
+      el.textContent = phrase.slice(0, --ci);
+      if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; }
+    }
+    setTimeout(type, deleting ? 40 : 70);
+  }
+  setTimeout(type, 1400);
+
+  // Filter
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      cards.forEach(card => {
+        card.style.display = (f === 'all' || card.dataset.cat === f) ? '' : 'none';
+      });
+    });
+  });
+
+  // Card expand
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      const detail = card.querySelector('.card-detail');
+      const hint = card.querySelector('.card-expand-hint');
+      const isOpen = detail.classList.toggle('open');
+      hint.textContent = isOpen ? '[ click to collapse ]' : '[ click to expand ]';
+    });
+  });
+</script>
+</body>
+</html>
